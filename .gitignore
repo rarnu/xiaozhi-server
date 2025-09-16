@@ -210,3 +210,8 @@ marimo/_lsp/
 __marimo__/
 
 .DS_Store
+
+iic/
+*.pt
+nohup.out
+sound/

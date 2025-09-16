@@ -9,6 +9,7 @@ logger = setup_logging()
 
 def create_instance(class_name, *args, **kwargs):
     # 创建TTS实例
+    print(f"创建TTS实例：{class_name}")
     if os.path.exists(os.path.join('core', 'providers', 'tts', f'{class_name}.py')):
         lib_name = f'core.providers.tts.{class_name}'
         if lib_name not in sys.modules:

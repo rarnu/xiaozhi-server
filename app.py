@@ -5,6 +5,7 @@ import asyncio
 from aioconsole import ainput
 from config.settings import load_config
 from config.logger import setup_logging
+from core.utils.cosyvoice_util import CosyVoiceAPI
 from core.utils.util import get_local_ip, validate_mcp_endpoint
 from core.http_server import SimpleHttpServer
 from core.websocket_server import WebSocketServer
@@ -44,6 +45,10 @@ async def monitor_stdin():
 
 async def main():
     check_ffmpeg_installed()
+
+    # 初始化cosyvoice
+    CosyVoiceAPI.init_voice()
+
     config = load_config()
 
     # 默认使用manager-api的secret作为auth_key

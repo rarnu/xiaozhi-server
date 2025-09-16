@@ -36,10 +36,12 @@ class SimpleHttpServer:
         server_config = self.config["server"]
         read_config_from_api = self.config.get("read_config_from_api", False)
         host = server_config.get("ip", "0.0.0.0")
-        port = int(server_config.get("http_port", 8003))
+        port = int(server_config.get("http_port", 58383))
 
         if port:
             app = web.Application()
+
+            app.router.add_static("/sound", "sound", name="sound")
 
             if not read_config_from_api:
                 # 如果没有开启智控台，只是单模块运行，就需要再添加简单OTA接口，用于下发websocket接口

@@ -49,13 +49,17 @@ class ManageApiClient:
         cls.retry_delay = cls.config.get("retry_delay", 10)  # 初始重试延迟(秒)
         # NOTE(goody): 2025/4/16 http相关资源统一管理，后续可以增加线程池或者超时
         # 后续也可以统一配置apiToken之类的走通用的Auth
+
+
+        header_obj = {
+            "User-Agent": f"PythonClient/2.0 (PID:{os.getpid()})",
+            "Accept": "application/json",
+            "Authorization": "Bearer " + cls._secret,
+        }
+
         cls._client = httpx.Client(
             base_url=cls.config.get("url"),
-            headers={
-                "User-Agent": f"PythonClient/2.0 (PID:{os.getpid()})",
-                "Accept": "application/json",
-                "Authorization": "Bearer " + cls._secret,
-            },
+            headers=header_obj,
             timeout=cls.config.get("timeout", 30),  # 默认超时时间30秒
         )
 
@@ -134,14 +138,17 @@ def get_agent_models(
     mac_address: str, client_id: str, selected_module: Dict
 ) -> Optional[Dict]:
     """获取代理模型配置"""
-    return ManageApiClient._instance._execute_request(
-        "POST",
-        "/config/agent-models",
-        json={
+
+    json_obj = {
             "macAddress": mac_address,
             "clientId": client_id,
             "selectedModule": selected_module,
-        },
+        }
+
+    return ManageApiClient._instance._execute_request(
+        "POST",
+        "/config/agent-models",
+        json=json_obj,
     )
 
 
